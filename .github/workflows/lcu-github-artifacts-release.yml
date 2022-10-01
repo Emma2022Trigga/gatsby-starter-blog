@@ -1,118 +1,165 @@
-name: Emma2022Trigga/gatsby-starter-blog
 
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-permissions: write-all
+  <title>Semantic UI Homepage</title>
 
-env:
-  CI: false
-  Branches: master
-  MainBranch: master
-  NPMRegistry: https://registry.npmjs.org/
-  InstallCommand: npm i
-  BuildCommand: npm run build
-  Output: ./public
+  <!-- Semantic UI -->
+  <link rel="stylesheet" href="res/semantic@2.4.2.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="res/jquery@3.4.1.js"></script>
+  <script src="res/semantic@2.4.2.js"></script>
+  <script src="index.js"></script>
+</head>
 
-jobs:
-  build:
-    # Build And Publish
-    name: Build and Publish
-    runs-on: ubuntu-latest
-    steps:
-      # checkout repository
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
+<body>
 
-      # set variables
-      - name: Set variables
-        id: vars
-        run: |
-          branch=${GITHUB_REF##*/}
+  <!-- Following Menu -->
+  <div class="ui large top fixed hidden menu">
+    <div class="ui container">
+      <a class="active item">Home</a>
+      <a class="item">Work</a>
+      <a class="item">Company</a>
+      <a class="item">Careers</a>
+      <div class="right menu">
+        <div class="item">
+          <a class="ui button">Log in</a>
+        </div>
+        <div class="item">
+          <a class="ui primary button">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-          echo ::set-output name=branchName::$branch
-           
-          if [ "$branch" == "${{ env.MainBranch }}" ]
-          then
-              echo "::set-output name=versionBump::minor"
-          else
-              echo "::set-output name=versionBump::patch"
-          fi
+  <!-- Sidebar Menu -->
+  <div class="ui vertical inverted sidebar menu">
+    <a class="active item">Home</a>
+    <a class="item">Work</a>
+    <a class="item">Company</a>
+    <a class="item">Careers</a>
+    <a class="item">Login</a>
+    <a class="item">Signup</a>
+  </div>
 
-      - run: |
-          echo "Set Variable Checks ${{ github.ref }}"
-          echo "Current branch is ${{ steps.vars.outputs.branchName }}"
-          echo "Version bump type is ${{ steps.vars.outputs.versionBump }}"
 
-      # Check package.json exists
-      - name: Check package.json existence
-        id: package_json_exists
-        uses: fathym/file-existence-action@master
-        with:
-          files: "package.json"
+  <!-- Page Contents -->
+  <div class="pusher">
+    <div class="ui inverted vertical masthead center aligned segment">
 
-      # replace text in package.json for main branch
-      - name: replace version text for main branch
-        if: ${{ steps.vars.outputs.branchName == env.MainBranch && steps.package_json_exists.outputs.files_exists == 'true' }}
-        shell: pwsh
-        run: (Get-Content -path package.json -Raw) -replace "version patch","version ${{ steps.versionBump.outputs.new_tag }} --no-git-tag-version -f" | Set-Content -Path package.json
+      <div class="ui container">
+        <div class="ui large secondary inverted pointing menu">
+          <a class="toc item">
+            <i class="sidebar icon"></i>
+          </a>
+          <a class="active item">Home</a>
+          <a class="item">Work</a>
+          <a class="item">Company</a>
+          <a class="item">Careers</a>
+          <div class="right item">
+            <a class="ui inverted button">Log in</a>
+            <a class="ui inverted button">Sign Up</a>
+          </div>
+        </div>
+      </div>
 
-      # replace text in package.json for dev branches
-      - name: replace tag text for dev branches
-        if: ${{ steps.vars.outputs.branchName != env.MainBranch && steps.package_json_exists.outputs.files_exists == 'true' }}
-        shell: pwsh
-        run: (Get-Content -path package.json -Raw) -replace "--access public","--access public --tag ${{ steps.vars.outputs.branchName }}" | Set-Content -Path package.json
+      <div class="ui text container">
+        <h1 class="ui inverted header">
+          Imagine-a-Company
+        </h1>
+        <h2>Do whatever you want when you want to.</h2>
+        <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div>
+      </div>
 
-      - name: replace version text for dev branches
-        if: ${{ steps.vars.outputs.branchName != env.MainBranch && steps.package_json_exists.outputs.files_exists == 'true' }}
-        shell: pwsh
-        run: (Get-Content -path package.json -Raw) -replace "version patch","version ${{ steps.versionBump.outputs.new_tag }}-${{ steps.vars.outputs.branchName }} --no-git-tag-version -f" | Set-Content -Path package.json
+    </div>
 
-      # run npm commands
-      - uses: actions/setup-node@v2
-        if: ${{ (!!env.InstallCommand || !!env.BuildCommand) && steps.package_json_exists.outputs.files_exists == 'true' }}
-        with:
-          node-version: 14
-          registry-url: ${{ env.NPMRegistry }}
+    <div class="ui vertical stripe segment">
+      <div class="ui middle aligned stackable grid container">
+        <div class="row">
+          <div class="eight wide column">
+            <h3 class="ui header">We Help Companies and Companions</h3>
+            <p>We can give your company superpowers to do things that they never thought possible. Let us delight your customers and empower your needs...through pure data analytics.</p>
+            <h3 class="ui header">We Make Bananas That Can Dance</h3>
+            <p>Yes that is right, you thought it was the stuff of dreams, but even bananas can be bioengineered.</p>
+          </div>
+          <div class="six wide right floated column">
+            <img src="images/white-image.png" class="ui large bordered rounded image">
+          </div>
+        </div>
+        <div class="row">
+          <div class="center aligned column">
+            <a class="ui huge button">Check Them Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      # install npm dependencies from package-lock.json
-      - name: npm install
-        if: ${{ !!env.InstallCommand && steps.package_json_exists.outputs.files_exists == 'true' }}
-        run: ${{ env.InstallCommand }}
 
-      # build npm
-      - name: npm build
-        if: ${{ !!env.BuildCommand && steps.package_json_exists.outputs.files_exists == 'true' }}
-        run: ${{ env.BuildCommand }}
+    <div class="ui vertical stripe quote segment">
+      <div class="ui equal width stackable internally celled grid">
+        <div class="center aligned row">
+          <div class="column">
+            <h3>"What a Company"</h3>
+            <p>That is what they all say about us</p>
+          </div>
+          <div class="column">
+            <h3>"I shouldn't have gone with their competitor."</h3>
+            <p>
+              <img src="images/avatar.jpg" class="ui avatar image"> <b>Nan</b> Chief Fun Officer Acme Toys
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      # publish github artifacts
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ github.event.organization.name }}-${{ github.event.repository.name }}
-          path: ${{ env.Output }}
+    <div class="ui vertical stripe segment">
+      <div class="ui text container">
+        <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
+        <p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing by providing massive amounts of whitespace and generic content that can seem massive, monolithic and worth your attention.</p>
+        <a class="ui large button">Read More</a>
+        <h4 class="ui horizontal header divider">
+          <a href="#">Case Studies</a>
+        </h4>
+        <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
+        <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
+        <a class="ui large button">I am Still Quite Interested</a>
+      </div>
+    </div>
 
-      # bump version and push tag
-      - name: Bump version and push tag
-        id: versionBump
-        uses: fathym/github-tag-action@master
-        if: ${{ steps.package_json_exists.outputs.files_exists == 'true' }}
-        env:
-          DEFAULT_BUMP: ${{ steps.vars.outputs.versionBump }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_BRANCHES: .*
-          WITH_V: false
-      - run: echo "New version is ${{ steps.versionBump.outputs.new_tag }}"
-      
-      # webhook to LowCodeUnit
-      - name: Invoke deployment hook
-        uses: fathym/workflow-webhook@v2
-        env:
-          webhook_url: ${{ secrets.LCU_WEBHOOK_URL }}
-          webhook_secret: ${{ secrets.LCU_WEBHOOK_SECRET }}
-          data: '{ "EnterpriseLookup": "${{ secrets.LCU_ENTERPRISE_LOOKUP }}", "Username": "${{ secrets.LCU_USERNAME }}" }'
+
+    <div class="ui inverted vertical footer segment">
+      <div class="ui container">
+        <div class="ui stackable inverted divided equal height stackable grid">
+          <div class="three wide column">
+            <h4 class="ui inverted header">About</h4>
+            <div class="ui inverted link list">
+              <a href="#" class="item">Sitemap</a>
+              <a href="#" class="item">Contact Us</a>
+              <a href="#" class="item">Religious Ceremonies</a>
+              <a href="#" class="item">Gazebo Plans</a>
+            </div>
+          </div>
+          <div class="three wide column">
+            <h4 class="ui inverted header">Services</h4>
+            <div class="ui inverted link list">
+              <a href="#" class="item">Banana Pre-Order</a>
+              <a href="#" class="item">DNA FAQ</a>
+              <a href="#" class="item">How To Access</a>
+              <a href="#" class="item">Favorite X-Men</a>
+            </div>
+          </div>
+          <div class="seven wide column">
+            <h4 class="ui inverted header">Footer Header</h4>
+            <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
